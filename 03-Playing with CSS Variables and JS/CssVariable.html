@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Variable with JS</title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    :root {
+      --base: #000;
+      --spacing: 10px;
+      --blur: 0px;
+      --grayscale: 0%;
+      --brightness: 100%;
+      --contrast: 100%;
+      --hue-rotate: 0deg;
+      --invert: 0%;
+      --opacity: 100%;
+      --saturate: 100%;
+      --sepia: 0%;
+    }
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur)) brightness(var(--brightness))
+        contrast(var(--contrast)) grayscale(var(--grayscale))
+        hue-rotate(var(--hue-rotate)) opacity(var(--opacity))
+        invert(var(--invert)) saturate(var(--saturate)) sepia(var(--sepia));
+    }
+    body {
+      text-align: center;
+      background: #112c3f;
+      color: aliceblue;
+      font-family: "cursive", sans-serif;
+      font-weight: 100;
+      font-size: 40px;
+    }
+    .hl {
+      color: var(--base);
+    }
+    .controls {
+      margin-bottom: 50px;
+    }
+    .col {
+      display: flex;
+      flex-direction: column;
+      width: 33.33%;
+      float: left;
+    }
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    p {
+      line-height: 0.5px;
+    }
+    label {
+      font-size: 30px;
+    }
+    input {
+      width: 150px;
+    }
+    .slider {
+      -webkit-appearance: none;
+      height: 10px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+    }
+    .slider:hover {
+      opacity: 1;
+    }
+    #image {
+      height: 50vh;
+      width: 90vh;
+    }
+    @media screen and (max-width: 600px) {
+      .column {
+        width: 100%;
+      }
+    }
+  </style>
+  <body>
+    <h2>Update CSS Variables With <span class="hl">JS</span></h2>
+    <div class="controls row">
+      <div class="col">
+        <p>
+          <label for="spacing">Spacing:</label>
+          <input
+            id="spacing"
+            type="range"
+            name="spacing"
+            min="10"
+            max="100"
+            value="10"
+            data-sizing="px"
+            class="slider"
+          />
+        </p>
+        <p>
+          <label for="blur">Blur:</label>
+          <input
+            type="range"
+            id="blur"
+            name="blur"
+            min="0"
+            max="25"
+            value="0"
+            data-sizing="px"
+            class="slider"
+          />
+        </p>
+        <p>
+          <label for="brightness">Brightness:</label>
+          <input
+            type="range"
+            id="brightness"
+            name="brightness"
+            min="10"
+            max="200"
+            value="100"
+            data-sizing="%"
+            class="slider"
+          />
+        </p>
+        <p>
+          <label for="sepia">Sepia:</label>
+          <input
+            type="range"
+            id="sepia"
+            name="sepia"
+            min="0"
+            max="100"
+            value="0"
+            data-sizing="%"
+            class="slider"
+          />
+        </p>
+      </div>
+      <div class="col">
+        <p>
+          <label for="invert">Invert:</label>
+          <input
+            id="invert"
+            type="range"
+            name="invert"
+            min="0"
+            max="100"
+            value="0"
+            data-sizing="%"
+            class="slider"
+          />
+        </p>
+        <p>
+          <label for="saturate">Saturate:</label>
+          <input
+            id="saturate"
+            type="range"
+            name="saturate"
+            min="0"
+            max="200"
+            value="100"
+            data-sizing="%"
+            class="slider"
+          />
+        </p>
+        <p>
+          <label for="grayscale">Grayscale:</label>
+          <input
+            id="grayscale"
+            type="range"
+            name="grayscale"
+            min="0"
+            max="100"
+            value="0"
+            data-sizing="%"
+            class="slider"
+          />
+        </p>
+        <p>
+          <label for="base">Base Color:</label>
+          <input id="base" type="color" name="base" value="#000000" />
+        </p>
+      </div>
+      <div class="col">
+        <p>
+          <label for="hue-rotate">Hue-rotate:</label>
+          <input
+            id="hue-rotate"
+            type="range"
+            name="hue-rotate"
+            min="0"
+            max="360"
+            value="0"
+            data-sizing="deg"
+            class="slider"
+          />
+        </p>
+        <p>
+          <label for="contrast">Contrast:</label>
+          <input
+            id="contrast"
+            type="range"
+            name="contrast"
+            min="0"
+            max="200"
+            value="100"
+            data-sizing="%"
+            class="slider"
+          />
+        </p>
+
+        <p>
+          <label for="opacity">Opacity:</label>
+          <input
+            id="opacity"
+            type="range"
+            name="opacity"
+            min="0"
+            max="100"
+            value="100"
+            data-sizing="%"
+            class="slider"
+          />
+        </p>
+        <p>
+          <input
+            type="file"
+            accept="image/*"
+            name="image"
+            id="file"
+            onchange="loadFile(event)"
+            style="display: none"
+          />
+          <label for="file" style="cursor: pointer; color: #fff"
+            >Upload Image</label
+          >
+        </p>
+      </div>
+    </div>
+    <img src="indian-heads-1391201.jpg" alt="img.jpg" id="image">
+    <script>
+      const inputs = document.querySelectorAll(".controls input");
+
+      function handleUpdate() {
+        const suffix = this.dataset.sizing || "";
+        document.documentElement.style.setProperty(
+          `--${this.name}`,
+          this.value + suffix
+        );
+      }
+
+      inputs.forEach((input) => input.addEventListener("change", handleUpdate));
+      inputs.forEach((input) =>
+        input.addEventListener("mousemove", handleUpdate)
+      );
+      var loadFile = function (event) {
+        var image = document.getElementById("image");
+        image.src = URL.createObjectURL(event.target.files[0]);
+      };
+    </script>
+  </body>
+</html>
